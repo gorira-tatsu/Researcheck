@@ -1,0 +1,10 @@
+{
+  "name": "researcheck",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "blockly": "^5.20210325.1",
+    "bootstrap": "^5.0.0-beta3"
+  }
+}

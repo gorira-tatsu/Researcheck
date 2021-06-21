@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        const word = {
+            "メリット":"デメリット",
+            "デメリット":"メリット"
+        }
+
+        function getSearchbox() {
+          return document.getElementById("q")
+        }
+
+        function plus(str) {
+            target = getSearchbox()
+            target.value = target.value + str;
+            return false;
+        }
+
+        function pushSearch() {
+            const target = getSearchbox();
+            const target_array = target.prototype.split(' ');
+            if (target_found = target_array.forEach(element => target_array.prototype.indexOf(element)) == -1) {
+                document.getElementsByClassName('gsc-input')[2].value = getSearchbox().value;
+                document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
+            }
+            else {
+                document.getElementsByClassName('gsc-input')[2].value = getSearchbox().value + word[found];
+                document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
+            }
+        }
+    </script>
+    <title>Search</title>
+</head>
+
+<body>
+<div class="input-group mb-3">
+    <button type="button" class="btn btn-outline-secondary" onclick="pushSearch()">Search</button>
+    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+      <span class="visually-hidden">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#" onclick="return plus(' -');">-</a></li>
+        <li><a class="dropdown-item" href="#" onclick="return plus(' or ')">or</a></li>
+        <li><a class="dropdown-item" href="#" onclick="return plus('site: ')">site:</a></li>
+    </ul>
+    <input id=q type="text" class="form-control" aria-label="Text input with segmented dropdown button">
+</div>
+<script async src="https://cse.google.com/cse.js?cx=b0d592601bb85c52c"></script>
+<div class="gcse-search"></div>
+
+<p>参考: <a href="https://support.google.com/websearch/answer/2466433?hl=ja">ウェブ検索の精度を高める</a></p>
+</body>
+</html>
