@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <!-- ofline mode <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="styles.css">
     <script>
         const word = {
@@ -21,18 +22,31 @@
             return false;
         }
 
-        function pushSearch() {
-            const target = getSearchbox();
-            const target_array = target.prototype.split(' ');
-            if (target_found = target_array.forEach(element => target_array.prototype.indexOf(element)) == -1) {
-                document.getElementsByClassName('gsc-input')[2].value = getSearchbox().value;
-                document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
-            }
-            else {
-                document.getElementsByClassName('gsc-input')[2].value = getSearchbox().value + word[found];
-                document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
+        function return_opposite(target_array) {
+            for (x in word) {
+                target_found = target_array.indexOf(x)
+                if (target_found !== -1) {
+                    return word[x];
+                }
+                else {
+                    return '';
+                }
             }
         }
+
+        function return_split(target) {
+            return target.split(/[\s\u3000]+/)
+        }
+
+        function Search(target_found) {
+            document.getElementsByClassName('gsc-input')[2].value = getSearchbox().value + target_found;
+            document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
+        }
+
+        function pushSearch() {
+            Search(return_opposite(return_split(getSearchbox().value)))
+        }
+
     </script>
     <title>Search</title>
 </head>
@@ -54,5 +68,7 @@
 <div class="gcse-search"></div>
 
 <p>参考: <a href="https://support.google.com/websearch/answer/2466433?hl=ja">ウェブ検索の精度を高める</a></p>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
 </body>
 </html>
