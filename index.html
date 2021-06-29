@@ -52,18 +52,20 @@
 </head>
 
 <body>
-<div class="input-group mb-3">
-    <button type="button" class="btn btn-outline-secondary" onclick="pushSearch()">Search</button>
-    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-      <span class="visually-hidden">Toggle Dropdown</span>
-    </button>
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#" onclick="return plus(' -');">-</a></li>
-        <li><a class="dropdown-item" href="#" onclick="return plus(' or ')">or</a></li>
-        <li><a class="dropdown-item" href="#" onclick="return plus('site: ')">site:</a></li>
-    </ul>
-    <input id=q type="text" class="form-control" aria-label="Text input with segmented dropdown button">
-</div>
+<form onsubmit="pushSearch(); return false;">
+    <div class="input-group mb-3">
+        <button type="submit" class="btn btn-outline-secondary">Search</button>
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="visually-hidden">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="return plus(' -');">-</a></li>
+            <li><a class="dropdown-item" href="#" onclick="return plus(' or ')">or</a></li>
+            <li><a class="dropdown-item" href="#" onclick="return plus('site: ')">site:</a></li>
+        </ul>
+        <input id=q type="text" class="form-control" aria-label="Text input with segmented dropdown button">
+    </div>
+</form>
 <script async src="https://cse.google.com/cse.js?cx=b0d592601bb85c52c"></script>
 <div class="gcse-search"></div>
 
