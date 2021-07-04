@@ -39,22 +39,28 @@
         }
         
         function return_exclusion() {
-            target = document.getElementById('exclusion').value
-            if (target !== ""){
-                return  ' -' + target
+            let target_value = []
+            let target = document.getElementsByClassName('exclusion')
+            for (let c=0;c !== target.length;c++){
+                if (target[c].value !== ""){
+                    target_value.push(' -' + target[c].value)
+                }
             }
-            else {
-                return ""
-            }
+            return target_value.join('')
         }
 
         function Search(target_found, exclusion) {
+            console.log(getSearchbox().value + target_found + exclusion);
             document.getElementsByClassName('gsc-input')[2].value = getSearchbox().value + target_found + exclusion;
             document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
         }
 
         function pushSearch() {
             Search(return_opposite(return_split(getSearchbox().value)), return_exclusion())
+        }
+
+        function create_exclusion_form() {
+            document.getElementById('exclusion-group').insertAdjacentHTML('beforeend','<input type="text" class="form-control search-input exclusion">')
         }
 
     </script>
@@ -70,13 +76,13 @@
             <form onsubmit="pushSearch(); return false;">
                 <div class="input-group mb-3">
                     <p></p>
-                    <input type="text" class="form-control" aria-describedby="button-addon2" id="q">
+                    <input type="text" class="form-control search-input" aria-describedby="button-addon2" placeholder="さがしたい言葉を入れよう" id="q">
                     <button class="btn btn-primary" type="submit" id="button-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>さがす</button>
                 </div>
             </form>
-            <p>除外する言葉</p>
-            <div class="input-group">
-                <input type="text" class="form-control" id="exclusion">
+            <p>除外する言葉 <button type="button" class="btn btn-link" onclick="create_exclusion_form()">複数除外する</button></p>
+            <div class="input-group" id="exclusion-group">
+                <input type="text" class="form-control search-input exclusion" id="exclusion">
             </div>
             <ul class="nav justify-content-center">
                 <li class="nav-item">
