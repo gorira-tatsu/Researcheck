@@ -1,3 +1,8 @@
 .gsc-search-box {
     display: none;
 }
+
+#exclusion-p {
+    margin: 0;
+    font-size: 15px;
+}
