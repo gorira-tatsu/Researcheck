@@ -10,148 +10,43 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-analytics.js"></script>
-    <script>
-
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        var firebaseConfig = {
-            apiKey: "AIzaSyAc91klrsA-NXeWxGV_--FM2FB1pD_Oc1k",
-            authDomain: "researcheck-c6439.firebaseapp.com",
-            projectId: "researcheck-c6439",
-            storageBucket: "researcheck-c6439.appspot.com",
-            messagingSenderId: "86049752207",
-            appId: "1:86049752207:web:80640fba82fc9b788e1cfa",
-            measurementId: "G-ESLY2Q6641"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-
-        const db = firebase.firestore();
-
-        const word = {
-            "メリット":"デメリット",
-            "デメリット":"メリット",
-            "危険":"安全",
-            "安全":"危険"
-        }
-
-        async function addSearchWord(search_word) {
-
-            const res = await db.collection('Search').add({
-                Search_Word:search_word
-            });
-
-        }
-
-        async function access(href, text){
-
-            const res = await db.collection('access').add({
-                text: text,
-                url: href
-            });
-
-        }
-
-        function getSearchbox() {
-            return document.getElementById("q")
-        }
-
-        function plus(str) {
-            target = getSearchbox()
-            target.value = target.value + str;
-            return false;
-        }
-
-        function getClickResult(result) {
-            for (c=0;c!==result.length;c++) {
-                result[c].addEventListener('click', function () {
-                    access(event.target.href,event.target.textContent)
-                })
-            }
-        }
-
-
-        function  getResult() {
-            Result = []
-            for(c=1;c!==11;c++){
-                Result.push(document.querySelector(`#___gcse_0 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`))
-            }
-            return Result
-        }
-
-        function return_opposite(target_array) {
-            for (x in word) {
-                target_found = target_array.indexOf(x)
-                if (target_found !== -1) {
-                    return word[x];
-                }
-                else {
-                    return '';
-                }
-            }
-        }
-
-        function return_split(target) {
-            return target.split(/[\s\u3000]+/)
-        }
-        
-        function return_exclusion() {
-            let target_value = []
-            let target = document.getElementsByClassName('exclusion')
-            for (let c=0;c !== target.length;c++){
-                if (target[c].value !== ""){
-                    target_value.push(' -' + target[c].value)
-                }
-            }
-            return target_value.join('')
-        }
-
-        function Search(target_found, exclusion) {
-            console.log(getSearchbox().value + target_found + exclusion);
-            addSearchWord(getSearchbox().value + target_found + exclusion)
-            document.getElementsByClassName('gsc-input')[2].value = getSearchbox().value + target_found + exclusion;
-            document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
-            window.setTimeout(function () {getClickResult(getResult())}, 2*1000);
-        }
-
-        function pushSearch() {
-            Search(return_opposite(return_split(getSearchbox().value)), return_exclusion())
-        }
-
-        function create_exclusion_form() {
-            document.getElementById('exclusion-group').insertAdjacentHTML('beforeend','<input type="text" class="form-control search-input exclusion">')
-        }
-
-    </script>
-    <title>Search</title>
+    <title>Researcheck</title>
 </head>
 
 <body>
-
+<script type="text/javascript" src="main.js"></script>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Researcheck</a>
+    </div>
+</nav>
 <div class="container">
     <div class="row">
         <div class="col"></div>
         <div class="col-10">
             <form onsubmit="pushSearch(); return false;">
                 <div class="input-group mb-3">
-                    <p></p>
                     <input type="text" class="form-control search-input" aria-describedby="button-addon2" placeholder="さがしたい言葉を入れよう" id="q">
                     <button class="btn btn-primary" type="submit" id="button-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>さがす</button>
+                    <ul class="nav justify-content-center">
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check option-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="btnradio1" onclick="console.log('test')">すべて</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio2">いずれか</label>
+                        </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="return plus(' site: ')">特定のサイトだけを検索</a>
+                        </li>
+                    </ul>
                 </div>
             </form>
             <p id="exclusion-p">除外する言葉 <button type="button" class="btn btn-link" onclick="create_exclusion_form()">複数除外する</button></p>
             <div class="input-group" id="exclusion-group">
                 <input type="text" class="form-control search-input exclusion" id="exclusion">
             </div>
-            <ul class="nav justify-content-center">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="return plus(' or ')">または</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="return plus('site: ')">特定のサイトだけを検索</a>
-                </li>
-            </ul>
+
         </div>
         <div class="col"></div>
     </div>
