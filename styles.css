@@ -6,3 +6,21 @@
     margin: 0;
     font-size: 15px;
 }
+
+.option-check-form {
+    padding: 8px 16px 8px 16px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
+}
