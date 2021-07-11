@@ -1,4 +1,3 @@
-
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 var firebaseConfig = {
@@ -20,7 +19,39 @@ const word = {
     "メリット":"デメリット",
     "デメリット":"メリット",
     "危険":"安全",
-    "安全":"危険"
+    "安全":"危険",
+    "大きい":"小さい",
+    "小さい":"大きい",
+    "遅い":"早い",
+    "早い":"遅い",
+    "暑い":"寒い",
+    "寒い":"暑い",
+    "良い":"悪い",
+    "悪い":"良い",
+    "新しい":"古い",
+    "古い":"新しい",
+    "若い":"年寄り",
+    "年寄り":"若い",
+    "短い":"長い",
+    "長い":"短い",
+    "薄い":"厚い",
+    "厚い":"薄い",
+    "重い":"軽い",
+    "軽い":"重い",
+    "強い":"弱い",
+    "弱い":"強い",
+    "太い":"細い",
+    "細い":"太い",
+    "安い":"高い",
+    "高い":"安い",
+    "遠い":"近い",
+    "近い":"遠い",
+    "正しい":"間違い",
+    "間違い":"正しい",
+    "最高":"最悪",
+    "最悪":"最高",
+    "良い":"悪い",
+    "悪い":"良い"
 }
 
 async function addSearchWord(search_word) {
@@ -95,9 +126,9 @@ function return_exclusion() {
 }
 
 function Search(target_found, exclusion) {
-    console.log(getSearchbox().value + target_found + exclusion);
+    console.log(AndOrInsert(getSearchbox().value) + target_found + exclusion);
     addSearchWord(getSearchbox().value + target_found + exclusion)
-    document.getElementsByClassName('gsc-input')[2].value = getSearchbox().value + target_found + exclusion;
+    document.getElementsByClassName('gsc-input')[2].value = AndOrInsert(getSearchbox().value) + target_found + exclusion;
     document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
     window.setTimeout(function () {getClickResult(getResult())}, 2*1000);
 }
