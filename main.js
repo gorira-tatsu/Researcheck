@@ -11,7 +11,6 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-firebase.analytics();
 
 const db = firebase.firestore();
 
@@ -54,6 +53,10 @@ const word = {
     "悪い":"良い"
 }
 
+var search = {
+
+}
+
 async function addSearchWord(search_word) {
 
     const res = await db.collection('Search').add({
@@ -75,12 +78,6 @@ function getSearchbox() {
     return document.getElementById("q")
 }
 
-function plus(str) {
-    target = getSearchbox()
-    target.value = target.value + str;
-    return false;
-}
-
 function getClickResult(result) {
     for (c=0;c!==result.length;c++) {
         result[c].addEventListener('click', function () {
@@ -88,7 +85,6 @@ function getClickResult(result) {
         })
     }
 }
-
 
 function  getResult() {
     Result = []
@@ -138,7 +134,7 @@ function pushSearch() {
 }
 
 function create_exclusion_form() {
-    document.getElementById('exclusion-group').insertAdjacentHTML('beforeend','<input type="text" class="form-control search-input exclusion">')
+    document.getElementById('exclusion-group').insertAdjacentHTML('beforeend','<input type="text" class="form-control search-input exclusion search-group AddExclusion">')
 }
 
 function AndOrInsert(SearchWord) {
@@ -160,4 +156,49 @@ function AndOrInsert(SearchWord) {
             return SearchWord
         }
     }
+}
+
+function formClear() {
+    target = document.getElementsByClassName('search-group')
+    for (x in target){
+        target[x].value = ""
+    }
+}
+
+function addSearchData() {
+    let search_group = document.getElementsByClassName('search-group')
+    let SearchWord_list = []
+    for (let c=0;c!==search_group.length;c++){
+        SearchWord_list.push(search_group[c].value)
+    }
+    return SearchWord_list
+}
+
+function addStorageHistory() {
+    let SearchWord = addSearchData()
+    localStorage.setItem(Storage.length+1, SearchWord)
+}
+
+function ReadStorage() {
+    for (let c=0;c!==localStorage.length;c++){
+        console.log(localStorage.getItem(c))
+    }
+}
+
+function addFormHistory(SearchWord, exclusion) {
+    getSearchbox().value = SearchWord
+    for (let c=0;c!==exclusion.length;c++){
+        if (document.getElementsByClassName('exclusion')[c]){
+            document.getElementsByClassName('exclusion')[c].value = exclusion[c]
+        }
+        else{
+            create_exclusion_form()
+            document.getElementsByClassName('exclusion')[c].value = exclusion[c]
+        }
+    }
+}
+
+function RemoveExclusion() {
+    let target = document.getElementsByClassName('AddExclusion')
+    target[0].remove()
 }
