@@ -14,7 +14,7 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 
-const word = {
+const antonym_list = {
     "メリット":"デメリット",
     "デメリット":"メリット",
     "危険":"安全",
@@ -49,15 +49,9 @@ const word = {
     "間違い":"正しい",
     "最高":"最悪",
     "最悪":"最高",
-    "良い":"悪い",
-    "悪い":"良い"
 }
 
-var search = {
-
-}
-
-async function addSearchWord(search_word) {
+async function record_search_word_to_firebase(search_word) {
 
     const res = await db.collection('Search').add({
         Search_Word:search_word
@@ -65,28 +59,28 @@ async function addSearchWord(search_word) {
 
 }
 
-async function access(href, text){
+async function record_access_to_firebase(url, title){
 
     const res = await db.collection('access').add({
-        text: text,
-        url: href
+        title: title,
+        url: url
     });
 
 }
 
-function getSearchbox() {
+function get_search_word_form() {
     return document.getElementById("q")
 }
 
-function getClickResult(result) {
+function give_click_event_to_search_result(result) {
     for (c=0;c!==result.length;c++) {
         result[c].addEventListener('click', function () {
-            access(event.target.href,event.target.textContent)
+            record_access_to_firebase(event.target.href,event.target.textContent)
         })
     }
 }
 
-function  getResult() {
+function  get_search_result() {
     Result = []
     for(c=1;c!==11;c++){
         Result.push(document.querySelector(`#___gcse_0 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`))
@@ -94,11 +88,11 @@ function  getResult() {
     return Result
 }
 
-function return_opposite(target_array) {
-    for (x in word) {
+function get_antonym(target_array) {
+    for (x in antonym_list) {
         target_found = target_array.indexOf(x)
         if (target_found !== -1) {
-            return word[x];
+            return antonym_list[x];
         }
         else {
             return '';
@@ -106,7 +100,7 @@ function return_opposite(target_array) {
     }
 }
 
-function return_split_space(target) {
+function split_space(target) {
     return target.split(/[\s\u3000]+/)
 }
 
@@ -122,24 +116,24 @@ function return_exclusion() {
 }
 
 function Search(target_found, exclusion) {
-    console.log(AndOrInsert(getSearchbox().value) + target_found + exclusion);
-    addSearchWord(getSearchbox().value + target_found + exclusion)
-    document.getElementsByClassName('gsc-input')[2].value = AndOrInsert(getSearchbox().value) + target_found + exclusion;
+    console.log(and_is_or_insert(get_search_word_form().value) + target_found + exclusion); // debug
+    record_search_word_to_firebase(get_search_word_form().value + target_found + exclusion)
+    document.getElementsByClassName('gsc-input')[2].value = and_is_or_insert(get_search_word_form().value) + target_found + exclusion; // 代入
     document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
-    window.setTimeout(function () {getClickResult(getResult())}, 2*1000);
+    window.setTimeout(function () {give_click_event_to_search_result(get_search_result())}, 2*1000); // click eventを付与
 }
 
 function pushSearch() {
-    Search(return_opposite(return_split_space(getSearchbox().value)), return_exclusion())
+    Search(get_antonym(split_space(get_search_word_form().value)), return_exclusion())
 }
 
-function create_exclusion_form() {
+function increase_exclusion_form() {
     document.getElementById('exclusion-group').insertAdjacentHTML('beforeend','<input type="text" class="form-control search-input exclusion search-group AddExclusion">')
 }
 
-function AndOrInsert(SearchWord) {
+function and_is_or_insert(SearchWord) {
     let target = document.getElementsByClassName('option-check')[0]
-    let split_word = return_split_space(SearchWord)
+    let split_word = split_space(SearchWord)
     if(target.checked){
         if(split_word.length !== 1){
             return split_word.join(' and ')
@@ -158,14 +152,14 @@ function AndOrInsert(SearchWord) {
     }
 }
 
-function formClear() {
+function resetForm() {
     target = document.getElementsByClassName('search-group')
     for (x in target){
         target[x].value = ""
     }
 }
 
-function addSearchData() {
+function get_data_exists_in_form() {
     let search_group = document.getElementsByClassName('search-group')
     let SearchWord_list = []
     for (let c=0;c!==search_group.length;c++){
@@ -174,31 +168,31 @@ function addSearchData() {
     return SearchWord_list
 }
 
-function addStorageHistory() {
-    let SearchWord = addSearchData()
+function record_history_to_local_storage() {
+    let SearchWord = get_data_exists_in_form()
     localStorage.setItem(Storage.length+1, SearchWord)
 }
 
-function ReadStorage() {
+function show_local_storage() {
     for (let c=0;c!==localStorage.length;c++){
         console.log(localStorage.getItem(c))
     }
 }
 
-function addFormHistory(SearchWord, exclusion) {
-    getSearchbox().value = SearchWord
+function assign_to_form(SearchWord, exclusion) {
+    get_search_word_form().value = SearchWord
     for (let c=0;c!==exclusion.length;c++){
         if (document.getElementsByClassName('exclusion')[c]){
             document.getElementsByClassName('exclusion')[c].value = exclusion[c]
         }
         else{
-            create_exclusion_form()
+            increase_exclusion_form()
             document.getElementsByClassName('exclusion')[c].value = exclusion[c]
         }
     }
 }
 
-function RemoveExclusion() {
+function decrement_exclusion_form() {
     let target = document.getElementsByClassName('AddExclusion')
     target[0].remove()
 }

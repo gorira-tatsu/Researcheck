@@ -45,10 +45,10 @@
                     </label>
                 </div>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="formClear()">検索をやり直す</a>
+                    <a class="nav-link" href="#" onclick="resetForm()">検索をやり直す</a>
                 </li>
             </ul>
-            <p id="exclusion-p">除外する言葉 <button type="button" class="btn btn-link" onclick="create_exclusion_form()">複数除外する</button><button type="button" class="btn btn-link" onclick="RemoveExclusion()">除外を減らす</button></p>
+            <p id="exclusion-p">除外する言葉 <button type="button" class="btn btn-link" onclick="increase_exclusion_form()">複数除外する</button><button type="button" class="btn btn-link" onclick="decrement_exclusion_form()">除外を減らす</button></p>
             <div class="input-group" id="exclusion-group">
                 <input type="text" class="form-control search-input exclusion search-group" id="exclusion">
             </div>
