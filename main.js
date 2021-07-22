@@ -119,8 +119,10 @@ function return_exclusion() {
 function Search(target_found, exclusion) {
     console.log(and_is_or_insert(get_search_word_form().value) + target_found + exclusion); // debug
     record_search_word_to_firebase(get_search_word_form().value + target_found + exclusion)
+    record_history_to_local_storage()
     document.getElementsByClassName('gsc-input')[2].value = and_is_or_insert(get_search_word_form().value) + target_found + exclusion; // 代入
     document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
+    show_local_storage()
     window.setTimeout(function () {give_click_event_to_search_result(get_search_result())}, 2*1000); // click eventを付与
 }
 
@@ -171,12 +173,22 @@ function get_data_exists_in_form() {
 
 function record_history_to_local_storage() {
     let SearchWord = get_data_exists_in_form()
-    localStorage.setItem(Storage.length+1, SearchWord)
+    localStorage.setItem(localStorage.length, SearchWord)
 }
 
 function show_local_storage() {
+    let element = document.getElementById("history");
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+
     for (let c=0;c!==localStorage.length;c++){
-        console.log(localStorage.getItem(c))
+        if(c!==5) {
+            document.getElementById('history').insertAdjacentHTML('beforeend', `<p><button onclick="search_from_history(${c})" class="btn btn-link" id="localstorage${c}">${localStorage.getItem(c)}</button><p>`)
+        }
+        else {
+            break
+        }
     }
 }
 
@@ -196,4 +208,11 @@ function assign_to_form(SearchWord, exclusion) {
 function decrement_exclusion_form() {
     let target = document.getElementsByClassName('AddExclusion')
     target[0].remove()
+}
+
+function search_from_history(number) {
+    let word = localStorage.getItem(number).split(',')
+    resetForm()
+    assign_to_form(word[0], word.slice(1))
+    pushSearch()
 }
