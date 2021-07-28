@@ -130,6 +130,13 @@ function pushSearch() {
     Search(get_antonym(split_space(get_search_word_form().value)), return_exclusion())
 }
 
+function Search_history(target_found, exclusion) {
+    record_search_word_to_firebase(get_search_word_form().value + target_found + exclusion)
+    document.getElementsByClassName('gsc-input')[2].value = and_is_or_insert(get_search_word_form().value) + target_found + exclusion; // 代入
+    document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
+    window.setTimeout(function () {give_click_event_to_search_result(get_search_result())}, 2*1000); // click eventを付与
+}
+
 function increase_exclusion_form() {
     document.getElementById('exclusion-group').insertAdjacentHTML('beforeend','<input type="text" class="form-control search-input exclusion search-group AddExclusion">')
 }
@@ -160,6 +167,7 @@ function resetForm() {
     for (x in target){
         target[x].value = ""
     }
+    decrement_all_exclusion_form()
 }
 
 function get_data_exists_in_form() {
@@ -173,7 +181,7 @@ function get_data_exists_in_form() {
 
 function record_history_to_local_storage() {
     let SearchWord = get_data_exists_in_form()
-    localStorage.setItem(localStorage.length, SearchWord)
+    localStorage.setItem(Date.now(), SearchWord)
 }
 
 function show_local_storage() {
@@ -181,15 +189,38 @@ function show_local_storage() {
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
+    let a = []
+    for (let i = 0; i < localStorage.length; i++) {
+        a.push(localStorage.key(i))
+    }
 
-    for (let c=0;c!==localStorage.length;c++){
-        if(c!==5) {
-            document.getElementById('history').insertAdjacentHTML('beforeend', `<p><button onclick="search_from_history(${c})" class="btn btn-link" id="localstorage${c}">${localStorage.getItem(c)}</button><p>`)
-        }
-        else {
-            break
+    let result = a.sort(function(a,b){
+        if( a > b ) return -1;
+        if( a < b ) return 1;
+        return 0;
+    });
+
+    console.log(result)
+
+    for(let c=0;c!==5;c++) {
+        if (localStorage.getItem(result[c]) !== null) {
+            console.log(localStorage.getItem(result[c]))
+            document.getElementById('history').insertAdjacentHTML('beforeend', `<p><button onclick="search_from_history(${result[c]})" class="btn btn-link" id="localstorage${c}">${localStorage.getItem(result[c])}</button><p>`)
+
         }
     }
+
+    // let x = 0
+    // while(x < 5){
+    //     if(x > 10){
+    //         break
+    //     }
+    //     if(localStorage.getItem(x) !== null){
+    //         document.getElementById('history').insertAdjacentHTML('beforeend', `<p><button onclick="search_from_history(${x})" class="btn btn-link" id="localstorage${x}">${localStorage.getItem(x)}</button><p>`)
+    //         x++
+    //     }
+    //     console.log(x)
+    // }
 }
 
 function assign_to_form(SearchWord, exclusion) {
@@ -214,5 +245,16 @@ function search_from_history(number) {
     let word = localStorage.getItem(number).split(',')
     resetForm()
     assign_to_form(word[0], word.slice(1))
-    pushSearch()
+    Search_history(get_antonym(split_space(get_search_word_form().value)), return_exclusion())
+}
+
+function decrement_all_exclusion_form(){
+    let t = Array.from(document.getElementsByClassName('AddExclusion'))
+    for(let c=0;c!==t.length;c++){
+        t[c].remove()
+    }
+}
+
+function on_center_theme(){
+    document.getElementById('theme_on').insertAdjacentHTML('afterbegin',document.getElementById('theme').value)
 }
