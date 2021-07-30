@@ -174,7 +174,9 @@ function get_data_exists_in_form() {
     let search_group = document.getElementsByClassName('search-group')
     let SearchWord_list = []
     for (let c=0;c!==search_group.length;c++){
-        SearchWord_list.push(search_group[c].value)
+        if(search_group[c].value !== ''){
+            SearchWord_list.push(search_group[c].value)
+        }
     }
     return SearchWord_list
 }
@@ -204,9 +206,14 @@ function show_local_storage() {
 
     for(let c=0;c!==5;c++) {
         if (localStorage.getItem(result[c]) !== null) {
-            console.log(localStorage.getItem(result[c]))
-            document.getElementById('history').insertAdjacentHTML('beforeend', `<p><button onclick="search_from_history(${result[c]})" class="btn btn-link" id="localstorage${c}">${localStorage.getItem(result[c])}</button><p>`)
+            let s = localStorage.getItem(result[c]).split(',')
 
+            if (c===0){
+                document.getElementById('history').insertAdjacentHTML('beforeend', `<a>履歴</a><br><a onclick="search_from_history(${result[c]})" class="btn btn-link histories" id="localstorage${c}">検索:${s[0]} 除外:${s.slice(1).join(',')}</a>`)
+            } // br not use
+            else {
+                document.getElementById('history').insertAdjacentHTML('beforeend', `<br><a onclick="search_from_history(${result[c]})" class="btn btn-link histories" id="localstorage${c}">検索:${s[0]} 除外:${s.slice(1).join(',')}</a>`)
+            } //br use
         }
     }
 
@@ -258,3 +265,21 @@ function decrement_all_exclusion_form(){
 function on_center_theme(){
     document.getElementById('theme_on').insertAdjacentHTML('afterbegin',document.getElementById('theme').value)
 }
+
+// function compare_search_result(Search_world) {
+//     let target_form_1 = document.getElementsByClassName('gsc-input')[5]
+//     let target_button1 = document.querySelector('#___gcse_1 > div > div > form > table > tbody > tr > td.gsc-search-button > button')
+//
+//     target_form_1.value = Search_world
+//     target_button1.click()
+//
+//     window.setTimeout(function () {
+//
+//         for(let c = 1;c!==11;c++){
+//             let zero = document.querySelector(`#___gcse_0 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`).text
+//             let one = document.querySelector(`#___gcse_1 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`).text
+//             if (zero === one){
+//                 console.log('ok[c]')
+//             }
+//         }}, 2*1000);
+// }
