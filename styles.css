@@ -4,7 +4,8 @@
 
 #exclusion-p {
     margin: 0;
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 .option-check-form {
@@ -40,4 +41,18 @@ footer {
 
 h5.notcredit{
     color: black !important;
+}
+
+h2.modal-title{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+#modal-body-title{
+    font-size: 16px;
+
+}
+
+#modal-body-input-p{
+    margin: 0;
 }

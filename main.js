@@ -119,10 +119,10 @@ function return_exclusion() {
 function Search(target_found, exclusion) {
     record_search_word_to_firebase(get_search_word_form().value + target_found + exclusion)
     record_history_to_local_storage()
-    document.getElementsByClassName('gsc-input')[2].value = and_is_or_insert(get_search_word_form().value) + target_found + exclusion; // 代入
+    document.getElementsByClassName('gsc-input')[2].value = get_search_word_form().value + target_found + exclusion; // 代入
     document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
     show_local_storage()
-    compare_search_result(and_is_or_insert(get_search_word_form().value) + target_found + exclusion)
+    compare_search_result(get_search_word_form().value+ target_found + exclusion)
     window.setTimeout(function () {give_click_event_to_search_result(get_search_result())}, 2*1000); // click eventを付与
 }
 
@@ -132,9 +132,9 @@ function pushSearch() {
 
 function Search_history(target_found, exclusion) {
     record_search_word_to_firebase(get_search_word_form().value + target_found + exclusion)
-    document.getElementsByClassName('gsc-input')[2].value = and_is_or_insert(get_search_word_form().value) + target_found + exclusion; // 代入
+    document.getElementsByClassName('gsc-input')[2].value = get_search_word_form().value + target_found + exclusion; // 代入
     document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
-    compare_search_result(and_is_or_insert(get_search_word_form().value) + target_found + exclusion)
+    compare_search_result(get_search_word_form().value + target_found + exclusion)
     window.setTimeout(function () {give_click_event_to_search_result(get_search_result())}, 2*1000); // click eventを付与
 }
 
@@ -142,26 +142,26 @@ function increase_exclusion_form() {
     document.getElementById('exclusion-group').insertAdjacentHTML('beforeend','<input type="text" class="form-control search-input exclusion search-group AddExclusion">')
 }
 
-function and_is_or_insert(SearchWord) {
-    let target = document.getElementsByClassName('option-check')[0]
-    let split_word = split_space(SearchWord)
-    if(target.checked){
-        if(split_word.length !== 1){
-            return split_word.join(' and ')
-        }
-        else{
-            return SearchWord
-        }
-    }
-    else{
-        if(split_word.length !== 1){
-            return split_word.join(' or ')
-        }
-        else{
-            return SearchWord
-        }
-    }
-}
+// function and_is_or_insert(SearchWord) {
+//     let target = document.getElementsByClassName('option-check')[0]
+//     let split_word = split_space(SearchWord)
+//     if(target.checked){
+//         if(split_word.length !== 1){
+//             return split_word.join(' and ')
+//         }
+//         else{
+//             return SearchWord
+//         }
+//     }
+//     else{
+//         if(split_word.length !== 1){
+//             return split_word.join(' or ')
+//         }
+//         else{
+//             return SearchWord
+//         }
+//     }
+// }
 
 function resetForm() {
     target = document.getElementsByClassName('search-group')
@@ -279,7 +279,7 @@ function compare_search_result(Search_world) {
         for(let c = 1;c!==11;c++){
             let zero = document.querySelector(`#___gcse_0 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`).text
             let one = document.querySelector(`#___gcse_1 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`).text
-            if (zero !== one){
+            if (zero === one){
                 not_credit_alert(document.querySelector(`#___gcse_0 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div`))
             }
         }}, 1000);
