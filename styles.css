@@ -33,3 +33,11 @@ footer {
     margin: 5px;
     padding: 5px;
 }
+
+#___gcse_1 {
+    display: none;
+}
+
+h5.notcredit{
+    color: black !important;
+}

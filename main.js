@@ -117,12 +117,12 @@ function return_exclusion() {
 }
 
 function Search(target_found, exclusion) {
-    console.log(and_is_or_insert(get_search_word_form().value) + target_found + exclusion); // debug
     record_search_word_to_firebase(get_search_word_form().value + target_found + exclusion)
     record_history_to_local_storage()
     document.getElementsByClassName('gsc-input')[2].value = and_is_or_insert(get_search_word_form().value) + target_found + exclusion; // 代入
     document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
     show_local_storage()
+    compare_search_result(and_is_or_insert(get_search_word_form().value) + target_found + exclusion)
     window.setTimeout(function () {give_click_event_to_search_result(get_search_result())}, 2*1000); // click eventを付与
 }
 
@@ -134,6 +134,7 @@ function Search_history(target_found, exclusion) {
     record_search_word_to_firebase(get_search_word_form().value + target_found + exclusion)
     document.getElementsByClassName('gsc-input')[2].value = and_is_or_insert(get_search_word_form().value) + target_found + exclusion; // 代入
     document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
+    compare_search_result(and_is_or_insert(get_search_word_form().value) + target_found + exclusion)
     window.setTimeout(function () {give_click_event_to_search_result(get_search_result())}, 2*1000); // click eventを付与
 }
 
@@ -266,20 +267,24 @@ function on_center_theme(){
     document.getElementById('theme_on').insertAdjacentHTML('afterbegin',document.getElementById('theme').value)
 }
 
-// function compare_search_result(Search_world) {
-//     let target_form_1 = document.getElementsByClassName('gsc-input')[5]
-//     let target_button1 = document.querySelector('#___gcse_1 > div > div > form > table > tbody > tr > td.gsc-search-button > button')
-//
-//     target_form_1.value = Search_world
-//     target_button1.click()
-//
-//     window.setTimeout(function () {
-//
-//         for(let c = 1;c!==11;c++){
-//             let zero = document.querySelector(`#___gcse_0 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`).text
-//             let one = document.querySelector(`#___gcse_1 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`).text
-//             if (zero === one){
-//                 console.log('ok[c]')
-//             }
-//         }}, 2*1000);
-// }
+function compare_search_result(Search_world) {
+    let target_form_1 = document.getElementsByClassName('gsc-input')[5]
+    let target_button1 = document.querySelector('#___gcse_1 > div > div > form > table > tbody > tr > td.gsc-search-button > button')
+
+    target_form_1.value = Search_world
+    target_button1.click()
+
+    window.setTimeout(function () {
+
+        for(let c = 1;c!==11;c++){
+            let zero = document.querySelector(`#___gcse_0 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`).text
+            let one = document.querySelector(`#___gcse_1 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`).text
+            if (zero !== one){
+                not_credit_alert(document.querySelector(`#___gcse_0 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div`))
+            }
+        }}, 1000);
+}
+
+function not_credit_alert(place) {
+    place.insertAdjacentHTML('beforeend','<h5 class="notcredit">このサイトは信用できません</h5>')
+}
