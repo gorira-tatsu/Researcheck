@@ -30,11 +30,6 @@ footer {
     margin: 0px;
 }
 
-#history {
-    margin: 5px;
-    padding: 5px;
-}
-
 #___gcse_1 {
     display: none;
 }
@@ -53,6 +48,19 @@ h2.modal-title{
 
 }
 
-#modal-body-input-p{
+.modal-body-input-p{
     margin: 0;
+}
+
+.timeSetting{
+    margin-top: 10px;
+}
+
+.modal-body{
+    margin: 10px;
+}
+
+#demo{
+    padding: 8px 16px 8px 16px;
+    color: #664d03;
 }

@@ -24,7 +24,7 @@
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Researcheck</a>
-        <div style="text-align:center"><p id="theme_on"></p></div>
+        <div style="text-align:center"><h3 id="theme_on"></h3></div>
         <a target="_blank" href="https://scrapbox.io/Researcheck/">ヘルプ</a>
     </div>
 </nav>
@@ -37,21 +37,64 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h5 id="modal-body-title">Researcheckではあなたが多く。深く。情報を得ることができます</h5>
-                <p id="modal-body-input-p">調べるテーマを決める</p>
-                <input type="text" class="form-control" id="theme">
+                <p>Researcheckはあなたが情報の深みへすばやくアクセスできるアプリです</p>
+                <p>誰でも使いやすく、三秒で使い始めることができます。</p>
+                <p>くわしくは<a href="https://scrapbox.io/Researcheck/Researcheck%E3%81%B8%E3%82%88%E3%81%86%E3%81%93%E3%81%9D%EF%BC%81">こちら</a></p>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="on_center_theme()">設定</button>
+                <p>
+                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        さあ、はじめましょう
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        <p class="modal-body-input-p">調べるテーマを決める</p>
+                        <input type="text" class="form-control" id="theme">
+                        <div class="timeSetting">
+                            <p class="modal-body-input-p">時間設定</p>
+                            <p class="modal-body-input-p">調べる</p>
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="searchTime">
+                                    <option selected value="3">三分</option>
+                                    <option value="5">五分</option>
+                                    <option value="10">十分</option>
+                                    <option value="15">十五分</option>
+                                </select>
+                            </div>
+                            <p class="modal-body-input-p">まとめる</p>
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="Summarize">
+                                    <option selected value="3">三分</option>
+                                    <option value="5">五分</option>
+                                    <option value="10">十分</option>
+                                    <option value="15">十五分</option>
+                                </select>
+                            </div>
+                            <p class="modal-body-input-p">話し合いをする</p>
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="Share">
+                                    <option selected value="3">三分</option>
+                                    <option value="5">五分</option>
+                                    <option value="10">十分</option>
+                                    <option value="15">十五分</option>
+                                </select>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="on_center_theme();countdownStart()">はじめる</button>
+                            </div>
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <div class="container">
-    <div class="row">
-        <div class="col"></div>
-        <div class="col-10">
+    <div class="row justify-content-md-center">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-8">
             <form onsubmit="pushSearch(); return false;">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control search-input search-group" aria-describedby="button-addon2" placeholder="さがしたい言葉を入れよう" id="q" autofocus>
@@ -62,16 +105,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="resetForm()">検索をやり直す</a>
                 </li>
+                <li>
+                    <div id="demo"></div>
+                </li>
             </ul>
             <p id="exclusion-p">除外する言葉 <button type="button" class="btn btn-link btn-item" onclick="increase_exclusion_form()">増やす</button><button type="button" class="btn btn-link" onclick="decrement_exclusion_form()">減らす</button></p>
             <div class="input-group" id="exclusion-group">
                 <input type="text" class="form-control search-input exclusion search-group" id="exclusion">
             </div>
+        </div>
+        <div class="col-sm-2 history-box">
+            <h2 class="modal-title">履歴</h2>
             <div id="history">
-
             </div>
         </div>
-        <div class="col"></div>
     </div>
     <script async src="https://cse.google.com/cse.js?cx=b0d592601bb85c52c"></script>
     <div class="gcse-search"></div>
@@ -88,7 +135,7 @@
         <div class="row no-gutters container-fluid">
             <div class="col text-center">
                 <span class="navbar-text">&copy;2021 Akiyama Tatsuhiko.</span>
-                <br><span class="navbar-text">By Google Engine</span>
+                <br><span class="navbar-text">By Google Programmable Search</span>
             </div>
         </div>
     </div>

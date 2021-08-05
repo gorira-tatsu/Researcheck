@@ -142,27 +142,6 @@ function increase_exclusion_form() {
     document.getElementById('exclusion-group').insertAdjacentHTML('beforeend','<input type="text" class="form-control search-input exclusion search-group AddExclusion">')
 }
 
-// function and_is_or_insert(SearchWord) {
-//     let target = document.getElementsByClassName('option-check')[0]
-//     let split_word = split_space(SearchWord)
-//     if(target.checked){
-//         if(split_word.length !== 1){
-//             return split_word.join(' and ')
-//         }
-//         else{
-//             return SearchWord
-//         }
-//     }
-//     else{
-//         if(split_word.length !== 1){
-//             return split_word.join(' or ')
-//         }
-//         else{
-//             return SearchWord
-//         }
-//     }
-// }
-
 function resetForm() {
     target = document.getElementsByClassName('search-group')
     for (x in target){
@@ -210,25 +189,13 @@ function show_local_storage() {
             let s = localStorage.getItem(result[c]).split(',')
 
             if (c===0){
-                document.getElementById('history').insertAdjacentHTML('beforeend', `<a>履歴</a><br><a onclick="search_from_history(${result[c]})" class="btn btn-link histories" id="localstorage${c}">検索:${s[0]} 除外:${s.slice(1).join(',')}</a>`)
+                document.getElementById('history').insertAdjacentHTML('beforeend', `<br><a onclick="search_from_history(${result[c]})" class="btn btn-link histories" id="localstorage${c}">検索:${s[0]} 除外:${s.slice(1).join(',')}</a>`)
             } // br not use
             else {
                 document.getElementById('history').insertAdjacentHTML('beforeend', `<br><a onclick="search_from_history(${result[c]})" class="btn btn-link histories" id="localstorage${c}">検索:${s[0]} 除外:${s.slice(1).join(',')}</a>`)
             } //br use
         }
     }
-
-    // let x = 0
-    // while(x < 5){
-    //     if(x > 10){
-    //         break
-    //     }
-    //     if(localStorage.getItem(x) !== null){
-    //         document.getElementById('history').insertAdjacentHTML('beforeend', `<p><button onclick="search_from_history(${x})" class="btn btn-link" id="localstorage${x}">${localStorage.getItem(x)}</button><p>`)
-    //         x++
-    //     }
-    //     console.log(x)
-    // }
 }
 
 function assign_to_form(SearchWord, exclusion) {
@@ -246,7 +213,7 @@ function assign_to_form(SearchWord, exclusion) {
 
 function decrement_exclusion_form() {
     let target = document.getElementsByClassName('AddExclusion')
-    target[0].remove()
+    target[target.length - 1].remove()
 }
 
 function search_from_history(number) {
@@ -279,7 +246,7 @@ function compare_search_result(Search_world) {
         for(let c = 1;c!==11;c++){
             let zero = document.querySelector(`#___gcse_0 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`).text
             let one = document.querySelector(`#___gcse_1 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div > a`).text
-            if (zero === one){
+            if (zero !== one){
                 not_credit_alert(document.querySelector(`#___gcse_0 > div > div > div > div.gsc-wrapper > div.gsc-resultsbox-visible > div > div > div.gsc-expansionArea > div:nth-child(${c}) > div.gs-webResult.gs-result > div.gsc-thumbnail-inside > div`))
             }
         }}, 1000);
@@ -287,4 +254,63 @@ function compare_search_result(Search_world) {
 
 function not_credit_alert(place) {
     place.insertAdjacentHTML('beforeend','<h5 class="notcredit">このサイトは信用できません</h5>')
+}
+
+function countdown(time,text) {
+
+
+    // Set the date we're counting down to
+    let countDownDate = Date.now() + (time*60)*1000
+
+// Update the count down every 1 second
+    let x = setInterval(function() {
+        let now = Date.now()
+
+        // Find the distance between now and the count down date
+        let distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result in the element with id="demo"
+        document.getElementById("demo").innerHTML = text + " 終了まで" + minutes + "分 " + seconds + "秒 ";
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("demo").innerHTML = "終了！";
+            let timerStop = new Audio('timerstop.mp3')
+            timerStop.play()
+        }
+
+    }, 1000);
+}
+
+function countdownStart() {
+    let searchTime = document.getElementById('searchTime').value
+    let Summarize = document.getElementById('Summarize').value
+    let Share = document.getElementById('Share').value
+
+    setTimeout(() => {
+        countdown(Share,"話し合い");
+    }, ((Summarize * 60 * 1000 + 1000) + (searchTime * 60 * 1000 + 1000)));
+
+    setTimeout(() => {
+        countdown(Summarize, "まとめ");
+    }, searchTime * 60 * 1000 + 1000);
+
+    countdown(searchTime, "調べる");
+}
+
+function getLibraryAPI(sru_parameter) {
+    $.ajax('https://iss.ndl.go.jp/api/sru?operation=searchRetrieve&maximumRecords=10&query=title="' + sru_parameter + '"').done(function(data, textStatus, jqXHR) {
+        $(data).find('recordData').each(function() {
+            var dataElement = $(this);
+
+            var about = dataElement.find('dcndl\\:BibAdminResource').eq(0).attr('rdf:about');
+            var title = dataElement.find('dcterms\\:title').eq(0).html();
+            console.log(title)
+        });
+    });
 }
