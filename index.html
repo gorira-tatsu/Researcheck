@@ -34,7 +34,9 @@
 </head>
 
 <body>
+
 <script type="text/javascript" src="main.js"></script>
+
 <header>
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
@@ -113,7 +115,7 @@
         <div class="col-sm-2">
         </div>
         <div class="col-sm-8">
-            <form onsubmit="pushSearch(); return false;">
+            <form onsubmit="pushSearch(''); return false;">
                 <div class="input-group mb-3">
                     <input type="search" class="form-control search-input search-group" aria-describedby="button-addon2" placeholder="さがしたい言葉を入れよう" id="q" autofocus>
                     <button class="btn btn-primary" type="submit" id="button-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>さがす</button>
@@ -131,6 +133,12 @@
             <div class="input-group" id="exclusion-group">
                 <input type="text" class="form-control search-input exclusion search-group" id="exclusion">
             </div>
+
+            <script async src="https://cse.google.com/cse.js?cx=b0d592601bb85c52c"></script>
+            <div class="gcse-search"></div>
+
+            <script async src="https://cse.google.com/cse.js?cx=e8c586a6e49140096"></script>
+            <div class="gcse-search"></div>
         </div>
         <div class="col-sm-2 history-box">
             <h2 class="modal-title">履歴</h2>
@@ -138,11 +146,7 @@
             </div>
         </div>
     </div>
-    <script async src="https://cse.google.com/cse.js?cx=b0d592601bb85c52c"></script>
-    <div class="gcse-search"></div>
 
-    <script async src="https://cse.google.com/cse.js?cx=e8c586a6e49140096"></script>
-    <div class="gcse-search"></div>
 </div>
 
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -155,7 +159,7 @@
         <div class="row no-gutters container-fluid">
             <div class="col text-center">
                 <span class="navbar-text">&copy;2021 Akiyama Tatsuhiko.</span>
-                <br><span class="navbar-text">By Google Programmable Search</span>
+                <br><span class="navbar-text">Powered by Google Custom Search</span>
             </div>
         </div>
     </div>

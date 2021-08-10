@@ -2,6 +2,7 @@
     display: none;
 }
 
+
 #exclusion-p {
     margin: 0;
     font-size: 16px;
@@ -63,4 +64,8 @@ h2.modal-title{
 #demo{
     padding: 8px 16px 8px 16px;
     color: #664d03;
+}
+
+.container{
+    max-width: 100%;
 }

@@ -110,32 +110,38 @@ function return_exclusion() {
     let target = document.getElementsByClassName('exclusion')
     for (let c=0;c !== target.length;c++){
         if (target[c].value !== ""){
-            target_value.push(' -' + target[c].value)
+            target_value.push(' -' + target[c].value )
         }
     }
     return target_value.join('')
 }
 
-function Search(target_found, exclusion) {
+function Search(target_found, exclusion, from) {
     record_search_word_to_firebase(get_search_word_form().value + target_found + exclusion)
-    record_history_to_local_storage()
-    document.getElementsByClassName('gsc-input')[2].value = get_search_word_form().value + target_found + exclusion; // 代入
-    document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
-    show_local_storage()
-    compare_search_result(get_search_word_form().value+ target_found + exclusion)
-    window.setTimeout(function () {give_click_event_to_search_result(get_search_result())}, 2*1000); // click eventを付与
-}
 
-function pushSearch() {
-    Search(get_antonym(split_space(get_search_word_form().value)), return_exclusion())
-}
+    if (from === null) {
+        record_history_to_local_storage()
+        show_local_storage()
+    }
 
-function Search_history(target_found, exclusion) {
-    record_search_word_to_firebase(get_search_word_form().value + target_found + exclusion)
+    else if (from === 'history') {
+    }
+
     document.getElementsByClassName('gsc-input')[2].value = get_search_word_form().value + target_found + exclusion; // 代入
     document.querySelector('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button').click();
     compare_search_result(get_search_word_form().value + target_found + exclusion)
     window.setTimeout(function () {give_click_event_to_search_result(get_search_result())}, 2*1000); // click eventを付与
+}
+
+function pushSearch(from) {
+    if (get_search_word_form().value !== '') {
+        if (from === '') {
+            Search(get_antonym(split_space(get_search_word_form().value)), return_exclusion())
+        }
+        else if (from === 'history') {
+            Search(get_antonym(split_space(get_search_word_form().value)), return_exclusion(), 'history')
+        }
+    }
 }
 
 function increase_exclusion_form() {
@@ -187,13 +193,7 @@ function show_local_storage() {
     for(let c=0;c!==5;c++) {
         if (localStorage.getItem(result[c]) !== null) {
             let s = localStorage.getItem(result[c]).split(',')
-
-            if (c===0){
-                document.getElementById('history').insertAdjacentHTML('beforeend', `<br><a onclick="search_from_history(${result[c]})" class="btn btn-link histories" id="localstorage${c}">検索:${s[0]} 除外:${s.slice(1).join(',')}</a>`)
-            } // br not use
-            else {
-                document.getElementById('history').insertAdjacentHTML('beforeend', `<br><a onclick="search_from_history(${result[c]})" class="btn btn-link histories" id="localstorage${c}">検索:${s[0]} 除外:${s.slice(1).join(',')}</a>`)
-            } //br use
+            document.getElementById('history').insertAdjacentHTML('beforeend', `<br><a onclick="search_from_history(${result[c]})" class="btn btn-link histories" id="localstorage${c}">検索:${s[0]} 除外:${s.slice(1).join(',')}</a>`)
         }
     }
 }
@@ -201,13 +201,10 @@ function show_local_storage() {
 function assign_to_form(SearchWord, exclusion) {
     get_search_word_form().value = SearchWord
     for (let c=0;c!==exclusion.length;c++){
-        if (document.getElementsByClassName('exclusion')[c]){
-            document.getElementsByClassName('exclusion')[c].value = exclusion[c]
-        }
-        else{
+        if (document.getElementsByClassName('exclusion')[c] === false){
             increase_exclusion_form()
-            document.getElementsByClassName('exclusion')[c].value = exclusion[c]
         }
+        document.getElementsByClassName('exclusion')[c].value = exclusion[c]
     }
 }
 
@@ -220,7 +217,7 @@ function search_from_history(number) {
     let word = localStorage.getItem(number).split(',')
     resetForm()
     assign_to_form(word[0], word.slice(1))
-    Search_history(get_antonym(split_space(get_search_word_form().value)), return_exclusion())
+    pushSearch('history')
 }
 
 function decrement_all_exclusion_form(){
@@ -256,8 +253,8 @@ function not_credit_alert(place) {
     place.insertAdjacentHTML('beforeend','<h5 class="notcredit">このサイトは信用できません</h5>')
 }
 
-function countdown(time,text) {
 
+function countdown(time,text) {
 
     // Set the date we're counting down to
     let countDownDate = Date.now() + (time*60)*1000
@@ -301,16 +298,4 @@ function countdownStart() {
     }, searchTime * 60 * 1000 + 1000);
 
     countdown(searchTime, "調べる");
-}
-
-function getLibraryAPI(sru_parameter) {
-    $.ajax('https://iss.ndl.go.jp/api/sru?operation=searchRetrieve&maximumRecords=10&query=title="' + sru_parameter + '"').done(function(data, textStatus, jqXHR) {
-        $(data).find('recordData').each(function() {
-            var dataElement = $(this);
-
-            var about = dataElement.find('dcndl\\:BibAdminResource').eq(0).attr('rdf:about');
-            var title = dataElement.find('dcterms\\:title').eq(0).html();
-            console.log(title)
-        });
-    });
 }
