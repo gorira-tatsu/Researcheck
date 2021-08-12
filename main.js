@@ -119,7 +119,7 @@ function return_exclusion() {
 function Search(target_found, exclusion, from) {
     record_search_word_to_firebase(get_search_word_form().value + target_found + exclusion)
 
-    if (from === null) {
+    if (from === '') {
         record_history_to_local_storage()
         show_local_storage()
     }
@@ -136,9 +136,9 @@ function Search(target_found, exclusion, from) {
 function pushSearch(from) {
     if (get_search_word_form().value !== '') {
         if (from === '') {
-            Search(get_antonym(split_space(get_search_word_form().value)), return_exclusion())
+            Search(get_antonym(split_space(get_search_word_form().value)), return_exclusion(),'')
         }
-        else if (from === 'history') {
+        if (from === 'history') {
             Search(get_antonym(split_space(get_search_word_form().value)), return_exclusion(), 'history')
         }
     }
