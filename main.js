@@ -95,10 +95,8 @@ function get_antonym(target_array) {
         if (target_found !== -1) {
             return antonym_list[x];
         }
-        else {
-            return '';
-        }
     }
+    return '';
 }
 
 function split_space(target) {
@@ -116,7 +114,20 @@ function return_exclusion() {
     return target_value.join('')
 }
 
+function insert_alert(){
+    if(document.getElementById('antonym')){
+    document.getElementById('antonym').remove()}
+    document.getElementById('antonym-alert').insertAdjacentHTML('beforeend','<div class="alert alert-primary" role="alert" id="antonym">対義語を挿入しました！</div>');
+}
+
 function Search(target_found, exclusion, from) {
+
+    get_search_word_form().value = get_search_word_form().value + ' ' + target_found + exclusion;
+
+    if(target_found!==''){
+        insert_alert()
+    }
+
     record_search_word_to_firebase(get_search_word_form().value + target_found + exclusion)
 
     if (from === '') {
